@@ -12,6 +12,7 @@ import software.amazon.awssdk.services.kinesis.model.ShardIteratorType
 import software.amazon.awssdk.services.s3.model.PutObjectRequest
 
 import scala.jdk.CollectionConverters.*
+import java.time.Instant
 
 object aws {
   object extensions {
@@ -23,15 +24,13 @@ object aws {
             ListShardsRequest.builder().streamName(streamName).build()
           )
           shards = shardsResponse.shards().asScala.toList
-          now <- IO.realTimeInstant
           iteratorsResponses <- shards.parTraverse { shard =>
             kinesisClient.getShardIterator(
               GetShardIteratorRequest
                 .builder()
                 .streamName(streamName)
+                .shardIteratorType(ShardIteratorType.TRIM_HORIZON)
                 .shardId(shard.shardId())
-                .shardIteratorType(ShardIteratorType.AT_TIMESTAMP)
-                .timestamp(now)
                 .build()
             )
           }
