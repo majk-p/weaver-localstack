@@ -34,7 +34,7 @@ import scala.jdk.CollectionConverters.*
 import scala.jdk.FutureConverters.*
 import scala.util.Random
 
-object LocalstackSuite extends MutableIOSuite {
+object LocalstackSuite extends IOSuite {
 
   type Res = (
       KinesisAsyncClientOp[IO],
