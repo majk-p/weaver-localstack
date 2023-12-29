@@ -36,11 +36,14 @@ import scala.util.Random
 
 object LocalstackSuite extends IOSuite {
 
+  type StreamName = String
+  type BucketName = String
+
   type Res = (
       KinesisAsyncClientOp[IO],
       S3AsyncClientOp[IO],
-      String,
-      String
+      StreamName,
+      BucketName
   )
 
   val streamNameBase = "my-stream"
